@@ -5,6 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LUXE MARKET — Premium Shopping</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- ============================================================ -->
+<!--  GOOGLE TAG MANAGER & DATA LAYER INITIALIZATION              -->
+<!--  Replace GTM-XXXXXXX with your actual GTM Container ID       -->
+<!-- ============================================================ -->
+<script>
+  // Initialize dataLayer BEFORE GTM loads (GA4 / GTM best practice)
+  window.dataLayer = window.dataLayer || [];
+
+  // ── Site-wide context pushed on page load ─────────────────────
+  window.dataLayer.push({
+    event: 'site_config',
+    site: {
+      name: 'LuxeMarket',
+      version: '2.0.0',
+      currency: 'USD',
+      locale: 'en-US',
+      environment: 'production'
+    }
+  });
+</script>
+
+<!-- Google Tag Manager (replace GTM-XXXXXXX with real ID) -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+<!-- End Google Tag Manager -->
 <style>
   :root {
     --bg: #0a0a0a;
@@ -1118,6 +1147,85 @@
 </head>
 <body>
 
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- ============================================================ -->
+<!--  DATA LAYER INSPECTOR PANEL (Dev Tool — toggle with Alt+D)   -->
+<!-- ============================================================ -->
+<div id="dl-panel" style="
+  position:fixed;bottom:0;right:0;width:480px;height:360px;
+  background:#0d1117;border:1px solid #30363d;border-bottom:none;border-right:none;
+  z-index:99999;display:none;flex-direction:column;font-family:'DM Sans',monospace;
+  box-shadow:-4px -4px 24px rgba(0,0,0,0.6);
+">
+  <div style="
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 16px;background:#161b22;border-bottom:1px solid #30363d;flex-shrink:0;
+  ">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="width:8px;height:8px;border-radius:50%;background:#52c472;display:inline-block;animation:dlBlink 1.5s infinite;"></span>
+      <span style="color:#e6edf3;font-size:0.8rem;font-weight:600;letter-spacing:0.08em;">DATA LAYER INSPECTOR</span>
+      <span id="dl-event-count" style="background:#21262d;color:#8b949e;font-size:0.7rem;padding:2px 8px;border-radius:10px;">0 events</span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button onclick="clearDLLog()" style="background:#21262d;border:1px solid #30363d;color:#8b949e;padding:3px 10px;font-size:0.72rem;cursor:pointer;border-radius:3px;">Clear</button>
+      <button onclick="toggleDLPanel()" style="background:none;border:none;color:#8b949e;font-size:1.1rem;cursor:pointer;line-height:1;">✕</button>
+    </div>
+  </div>
+  <!-- Tab bar -->
+  <div style="display:flex;border-bottom:1px solid #30363d;flex-shrink:0;background:#161b22;">
+    <button class="dl-tab active" onclick="switchDLTab('events',this)" style="padding:7px 16px;background:none;border:none;border-bottom:2px solid #c9a84c;color:#c9a84c;font-size:0.75rem;cursor:pointer;letter-spacing:0.06em;">EVENTS</button>
+    <button class="dl-tab" onclick="switchDLTab('state',this)" style="padding:7px 16px;background:none;border:none;border-bottom:2px solid transparent;color:#8b949e;font-size:0.75rem;cursor:pointer;letter-spacing:0.06em;">CURRENT STATE</button>
+    <button class="dl-tab" onclick="switchDLTab('cart',this)" style="padding:7px 16px;background:none;border:none;border-bottom:2px solid transparent;color:#8b949e;font-size:0.75rem;cursor:pointer;letter-spacing:0.06em;">CART DATA</button>
+  </div>
+  <!-- Events log -->
+  <div id="dl-tab-events" style="flex:1;overflow-y:auto;padding:8px 0;" class="dl-tab-content"></div>
+  <!-- Current state -->
+  <div id="dl-tab-state" style="flex:1;overflow-y:auto;padding:12px 16px;display:none;" class="dl-tab-content">
+    <pre id="dl-state-json" style="color:#79c0ff;font-size:0.72rem;line-height:1.7;white-space:pre-wrap;"></pre>
+  </div>
+  <!-- Cart data -->
+  <div id="dl-tab-cart" style="flex:1;overflow-y:auto;padding:12px 16px;display:none;" class="dl-tab-content">
+    <pre id="dl-cart-json" style="color:#56d364;font-size:0.72rem;line-height:1.7;white-space:pre-wrap;"></pre>
+  </div>
+</div>
+
+<!-- Toggle hint badge -->
+<div id="dl-hint" onclick="toggleDLPanel()" style="
+  position:fixed;bottom:16px;right:16px;z-index:99998;
+  background:#0d1117;border:1px solid #c9a84c;color:#c9a84c;
+  padding:7px 14px;font-size:0.7rem;letter-spacing:0.1em;cursor:pointer;
+  display:flex;align-items:center;gap:7px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.5);
+">
+  <span style="width:7px;height:7px;border-radius:50%;background:#52c472;display:inline-block;animation:dlBlink 1.5s infinite;"></span>
+  DATA LAYER <span id="dl-badge-count" style="background:#c9a84c;color:#000;border-radius:10px;padding:1px 7px;font-weight:700;">0</span>
+</div>
+
+<style>
+  @keyframes dlBlink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  #dl-panel::-webkit-scrollbar { width:4px; }
+  #dl-panel *::-webkit-scrollbar { width:4px; }
+  #dl-panel *::-webkit-scrollbar-thumb { background:#30363d; }
+  .dl-entry { padding:7px 16px; border-bottom:1px solid #21262d; cursor:pointer; transition:background 0.15s; }
+  .dl-entry:hover { background:#161b22; }
+  .dl-entry-header { display:flex; align-items:center; justify-content:space-between; }
+  .dl-event-name { font-size:0.76rem; font-weight:600; }
+  .dl-event-time { font-size:0.67rem; color:#8b949e; }
+  .dl-event-preview { font-size:0.7rem; color:#8b949e; margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:380px; }
+  .dl-payload { display:none; margin-top:8px; padding:8px; background:#161b22; border-radius:4px; }
+  .dl-payload pre { font-size:0.68rem; color:#79c0ff; line-height:1.6; white-space:pre-wrap; }
+  .dl-entry.expanded .dl-payload { display:block; }
+  .dl-tag-ecom { color:#56d364; }
+  .dl-tag-nav { color:#79c0ff; }
+  .dl-tag-user { color:#d2a8ff; }
+  .dl-tag-ui { color:#ffa657; }
+  .dl-tab.active { color:#c9a84c !important; border-bottom-color:#c9a84c !important; }
+</style>
+
 <!-- ============================================================ -->
 <!--  HEADER  -->
 <!-- ============================================================ -->
@@ -1805,30 +1913,433 @@
 </div>
 
 <!-- ============================================================ -->
-<!--  JAVASCRIPT  -->
+<!--  JAVASCRIPT — with full GTM / GA4 Data Layer integration     -->
 <!-- ============================================================ -->
 <script>
-// ===== DATA =====
+'use strict';
+
+/* ================================================================
+   0. DATA LAYER CORE
+   A thin wrapper around window.dataLayer that:
+   - Ensures the array always exists
+   - Timestamps every push
+   - Logs to the in-page Inspector panel
+   - Exposes dlPush() for all events below
+================================================================ */
+window.dataLayer = window.dataLayer || [];
+
+const DL = {
+  _eventCount: 0,
+
+  push(payload) {
+    // Attach timestamp
+    payload.timestamp = new Date().toISOString();
+    payload.session_id = DL._sessionId;
+    window.dataLayer.push(payload);
+    DL._eventCount++;
+    DL._logToInspector(payload);
+    DL._updateBadge();
+    console.groupCollapsed(`%c[DataLayer] ${payload.event}`, 'color:#c9a84c;font-weight:bold;', payload.timestamp);
+    console.log(JSON.parse(JSON.stringify(payload)));
+    console.groupEnd();
+  },
+
+  // Unique session id for this tab
+  _sessionId: 'sess_' + Math.random().toString(36).substr(2, 9),
+
+  // Color coding per event category
+  _eventColor(event) {
+    if (!event) return '#8b949e';
+    if (event.startsWith('view_item') || event.startsWith('add_') || event.startsWith('remove_') || event.includes('purchase') || event.includes('checkout') || event.includes('cart') || event.includes('promo')) return '#56d364'; // ecom green
+    if (event.startsWith('page_') || event.startsWith('navigate')) return '#79c0ff';  // nav blue
+    if (event.startsWith('login') || event.startsWith('sign') || event.startsWith('user')) return '#d2a8ff'; // user purple
+    return '#ffa657'; // ui amber
+  },
+
+  _logToInspector(payload) {
+    const log = document.getElementById('dl-tab-events');
+    if (!log) return;
+    const color = DL._eventColor(payload.event);
+    const entry = document.createElement('div');
+    entry.className = 'dl-entry';
+
+    // Build a short preview string
+    let preview = '';
+    if (payload.ecommerce) {
+      const items = payload.ecommerce.items || [];
+      if (items.length) preview = items.map(i => `${i.item_name} × ${i.quantity||1}`).join(', ');
+      if (payload.ecommerce.value) preview += (preview ? ' | ' : '') + `$${Number(payload.ecommerce.value).toFixed(2)}`;
+    } else if (payload.page_name) preview = payload.page_name;
+    else if (payload.method) preview = payload.method;
+    else if (payload.coupon_code) preview = `code: ${payload.coupon_code}`;
+
+    const now = new Date();
+    const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}.${String(now.getMilliseconds()).padStart(3,'0')}`;
+
+    entry.innerHTML = `
+      <div class="dl-entry-header">
+        <span class="dl-event-name" style="color:${color};">${payload.event || '(push)'}</span>
+        <span class="dl-event-time">${timeStr}</span>
+      </div>
+      ${preview ? `<div class="dl-event-preview">${preview}</div>` : ''}
+      <div class="dl-payload"><pre>${JSON.stringify(payload, null, 2)}</pre></div>`;
+
+    entry.onclick = () => entry.classList.toggle('expanded');
+
+    // Prepend (newest on top)
+    log.insertBefore(entry, log.firstChild);
+    document.getElementById('dl-event-count').textContent = DL._eventCount + ' events';
+  },
+
+  _updateBadge() {
+    const b = document.getElementById('dl-badge-count');
+    if (b) { b.textContent = DL._eventCount; b.style.animation = 'none'; setTimeout(() => b.style.animation = '', 10); }
+  },
+
+  // Helper: build GA4-style items array from cart items
+  cartToItems(cartArr) {
+    return cartArr.map((item, idx) => ({
+      item_id: `SKU_${String(item.id).padStart(4,'0')}`,
+      item_name: item.name,
+      item_category: item.cat,
+      item_variant: item.selectedSize || 'Standard',
+      item_brand: 'LuxeMarket',
+      price: item.price,
+      quantity: item.qty,
+      index: idx,
+      discount: item.originalPrice ? (item.originalPrice - item.price) : 0
+    }));
+  },
+
+  // Helper: single product → item object
+  productToItem(p, qty = 1, idx = 0) {
+    return {
+      item_id: `SKU_${String(p.id).padStart(4,'0')}`,
+      item_name: p.name,
+      item_category: p.cat,
+      item_variant: 'Standard',
+      item_brand: 'LuxeMarket',
+      price: p.price,
+      quantity: qty,
+      index: idx,
+      discount: p.originalPrice ? (p.originalPrice - p.price) : 0,
+      item_badge: p.badge || null
+    };
+  }
+};
+
+/* ================================================================
+   1. PRODUCT CATALOG DATA
+================================================================ */
 const PRODUCTS = [
-  { id:1, name:'Obsidian Watch', cat:'Accessories', price:299, originalPrice:399, emoji:'⌚', badge:'SALE', desc:'Hand-assembled precision timepiece. Swiss movement, sapphire crystal glass, and a rich obsidian case that commands attention in any room.', colors:['#1a1a1a','#c9a84c','#8b3a3a'] },
-  { id:2, name:'Silk Evening Blouse', cat:'Apparel', price:189, originalPrice:null, emoji:'👘', badge:null, desc:'100% mulberry silk, cut on the bias for a fluid drape. Hand-finished French seams. Machine wash on silk cycle.', colors:['#f0e6d3','#2d4a3e','#8b3a3a'] },
-  { id:3, name:'Leather Passport Wallet', cat:'Accessories', price:95, originalPrice:null, emoji:'👛', badge:'NEW', desc:'Full-grain vegetable-tanned leather. Patinas beautifully with age. Holds up to 6 cards plus your passport.', colors:['#8b5e3c','#1a1a1a','#c9a84c'] },
-  { id:4, name:'Noise-Cancel Headphones', cat:'Tech', price:349, originalPrice:449, emoji:'🎧', badge:'SALE', desc:'40-hour battery, active noise cancellation, and 40mm custom drivers tuned for audiophile-grade warmth. Premium leather earcups.', colors:['#1a1a1a','#f0e6d3'] },
-  { id:5, name:'Merino Wool Sweater', cat:'Apparel', price:225, originalPrice:null, emoji:'🧥', badge:null, desc:'Extra-fine 18.5-micron Merino wool. Itch-free, temperature regulating, and naturally odor resistant. A lifelong wardrobe staple.', colors:['#c9a84c','#2d4a3e','#1a1a2e'] },
-  { id:6, name:'Marble Chess Set', cat:'Lifestyle', price:480, originalPrice:null, emoji:'♟️', badge:'LIMITED', desc:'Hand-carved Rajasthan marble with gilt inlay. Each piece takes over 3 hours to craft by master artisans in Agra, India.', colors:['#f0ebe3','#1a1a1a'] },
-  { id:7, name:'Monogram Backpack', cat:'Accessories', price:275, originalPrice:null, emoji:'🎒', badge:null, desc:'Japanese ballistic nylon with full-grain leather accents. 28L capacity, laptop sleeve, and hidden RFID pocket. Built to last decades.', colors:['#1a1a1a','#8b5e3c'] },
-  { id:8, name:'Smart Wellness Band', cat:'Tech', price:199, originalPrice:249, emoji:'📿', badge:'SALE', desc:'Track sleep, HRV, blood oxygen, and stress. 7-day battery. Ultra-thin titanium frame. Works with iOS & Android.', colors:['#c9a84c','#1a1a1a','#2d4a3e'] },
-  { id:9, name:'Linen Dress Shirt', cat:'Apparel', price:145, originalPrice:null, emoji:'👔', badge:null, desc:'Stone-washed Belgian linen. Breathable, durable, and impossibly cool. A Sunday shirt for Tuesday boardrooms.', colors:['#f0e6d3','#2d4a3e','#8b3a3a'] },
-  { id:10, name:'Artisan Candle Set', cat:'Lifestyle', price:85, originalPrice:null, emoji:'🕯️', badge:'BESTSELLER', desc:'Hand-poured soy wax with cotton wicks. Three signature scents: Oud & Amber, Bergamot & Vetiver, and White Tea & Sage. 60hr burn time.', colors:['#f0e6d3','#c9a84c'] },
-  { id:11, name:'Gold Fountain Pen', cat:'Accessories', price:320, originalPrice:null, emoji:'🖊️', badge:null, desc:'18K gold nib, hand-tuned for buttery smooth writing. Solid brass body with a lacquered finish. Converter included.', colors:['#c9a84c','#1a1a1a'] },
-  { id:12, name:'Cashmere Beanie', cat:'Apparel', price:110, originalPrice:null, emoji:'🧢', badge:null, desc:'Grade-A Mongolian cashmere, 2-ply knit. Pill-resistant and supremely soft. One size fits all.', colors:['#c9a84c','#2d4a3e','#8b3a3a','#1a1a2e'] },
+  { id:1,  name:'Obsidian Watch',         cat:'Accessories', price:299, originalPrice:399, emoji:'⌚', badge:'SALE',       desc:'Hand-assembled precision timepiece. Swiss movement, sapphire crystal glass, and a rich obsidian case that commands attention in any room.',            colors:['#1a1a1a','#c9a84c','#8b3a3a'] },
+  { id:2,  name:'Silk Evening Blouse',     cat:'Apparel',     price:189, originalPrice:null, emoji:'👘', badge:null,        desc:'100% mulberry silk, cut on the bias for a fluid drape. Hand-finished French seams. Machine wash on silk cycle.',                                 colors:['#f0e6d3','#2d4a3e','#8b3a3a'] },
+  { id:3,  name:'Leather Passport Wallet', cat:'Accessories', price:95,  originalPrice:null, emoji:'👛', badge:'NEW',       desc:'Full-grain vegetable-tanned leather. Patinas beautifully with age. Holds up to 6 cards plus your passport.',                                    colors:['#8b5e3c','#1a1a1a','#c9a84c'] },
+  { id:4,  name:'Noise-Cancel Headphones', cat:'Tech',        price:349, originalPrice:449, emoji:'🎧', badge:'SALE',       desc:'40-hour battery, active noise cancellation, and 40mm custom drivers tuned for audiophile-grade warmth. Premium leather earcups.',               colors:['#1a1a1a','#f0e6d3'] },
+  { id:5,  name:'Merino Wool Sweater',     cat:'Apparel',     price:225, originalPrice:null, emoji:'🧥', badge:null,        desc:'Extra-fine 18.5-micron Merino wool. Itch-free, temperature regulating, and naturally odor resistant. A lifelong wardrobe staple.',             colors:['#c9a84c','#2d4a3e','#1a1a2e'] },
+  { id:6,  name:'Marble Chess Set',        cat:'Lifestyle',   price:480, originalPrice:null, emoji:'♟️', badge:'LIMITED',   desc:'Hand-carved Rajasthan marble with gilt inlay. Each piece takes over 3 hours to craft by master artisans in Agra, India.',                     colors:['#f0ebe3','#1a1a1a'] },
+  { id:7,  name:'Monogram Backpack',       cat:'Accessories', price:275, originalPrice:null, emoji:'🎒', badge:null,        desc:'Japanese ballistic nylon with full-grain leather accents. 28L capacity, laptop sleeve, and hidden RFID pocket. Built to last decades.',       colors:['#1a1a1a','#8b5e3c'] },
+  { id:8,  name:'Smart Wellness Band',     cat:'Tech',        price:199, originalPrice:249, emoji:'📿', badge:'SALE',       desc:'Track sleep, HRV, blood oxygen, and stress. 7-day battery. Ultra-thin titanium frame. Works with iOS & Android.',                             colors:['#c9a84c','#1a1a1a','#2d4a3e'] },
+  { id:9,  name:'Linen Dress Shirt',       cat:'Apparel',     price:145, originalPrice:null, emoji:'👔', badge:null,        desc:'Stone-washed Belgian linen. Breathable, durable, and impossibly cool. A Sunday shirt for Tuesday boardrooms.',                                colors:['#f0e6d3','#2d4a3e','#8b3a3a'] },
+  { id:10, name:'Artisan Candle Set',      cat:'Lifestyle',   price:85,  originalPrice:null, emoji:'🕯️', badge:'BESTSELLER',desc:'Hand-poured soy wax with cotton wicks. Three signature scents: Oud & Amber, Bergamot & Vetiver, and White Tea & Sage. 60hr burn time.',     colors:['#f0e6d3','#c9a84c'] },
+  { id:11, name:'Gold Fountain Pen',       cat:'Accessories', price:320, originalPrice:null, emoji:'🖊️', badge:null,        desc:'18K gold nib, hand-tuned for buttery smooth writing. Solid brass body with a lacquered finish. Converter included.',                         colors:['#c9a84c','#1a1a1a'] },
+  { id:12, name:'Cashmere Beanie',         cat:'Apparel',     price:110, originalPrice:null, emoji:'🧢', badge:null,        desc:'Grade-A Mongolian cashmere, 2-ply knit. Pill-resistant and supremely soft. One size fits all.',                                               colors:['#c9a84c','#2d4a3e','#8b3a3a','#1a1a2e'] },
 ];
 
+/* ================================================================
+   2. STATE
+================================================================ */
 let cart = [];
 let promoApplied = false;
+let promoCode = null;
 let currentProduct = null;
+let checkoutStep = 1;
+let currentPage = 'home';
+let selectedPaymentMethod = 'card';
+let currentOrderId = null;
 
-// ===== PAGE NAVIGATION =====
+/* ================================================================
+   3. DATA LAYER — EVENT FUNCTIONS
+   Every meaningful user interaction fires a DL.push()
+   Events follow GA4 Enhanced E-commerce spec:
+   https://developers.google.com/analytics/devguides/collection/ga4/reference/events
+================================================================ */
+
+// ── 3a. Navigation / Page Views ───────────────────────────────
+function dl_page_view(pageName) {
+  DL.push({
+    event: 'page_view',
+    page_name: pageName,
+    page_title: document.title,
+    page_location: window.location.href + '#' + pageName,
+    user_session_id: DL._sessionId
+  });
+}
+
+// ── 3b. Product Impressions (item_list_view) ──────────────────
+function dl_view_item_list(products, listName) {
+  DL.push({
+    event: 'view_item_list',
+    ecommerce: {
+      item_list_id: listName.toLowerCase().replace(/\s+/g, '_'),
+      item_list_name: listName,
+      items: products.map((p, i) => DL.productToItem(p, 1, i))
+    }
+  });
+}
+
+// ── 3c. Product Detail View ───────────────────────────────────
+function dl_view_item(product) {
+  DL.push({
+    event: 'view_item',
+    ecommerce: {
+      currency: 'USD',
+      value: product.price,
+      items: [DL.productToItem(product)]
+    }
+  });
+}
+
+// ── 3d. Add to Cart ───────────────────────────────────────────
+function dl_add_to_cart(product, qty) {
+  DL.push({
+    event: 'add_to_cart',
+    ecommerce: {
+      currency: 'USD',
+      value: product.price * qty,
+      items: [DL.productToItem(product, qty)]
+    }
+  });
+}
+
+// ── 3e. Remove from Cart ──────────────────────────────────────
+function dl_remove_from_cart(product, qty) {
+  DL.push({
+    event: 'remove_from_cart',
+    ecommerce: {
+      currency: 'USD',
+      value: product.price * qty,
+      items: [DL.productToItem(product, qty)]
+    }
+  });
+}
+
+// ── 3f. View Cart ─────────────────────────────────────────────
+function dl_view_cart() {
+  const subtotal = getCartSubtotal();
+  DL.push({
+    event: 'view_cart',
+    ecommerce: {
+      currency: 'USD',
+      value: subtotal,
+      items: DL.cartToItems(cart)
+    }
+  });
+}
+
+// ── 3g. Begin Checkout ────────────────────────────────────────
+function dl_begin_checkout() {
+  const subtotal = getCartSubtotal();
+  DL.push({
+    event: 'begin_checkout',
+    ecommerce: {
+      currency: 'USD',
+      value: subtotal,
+      coupon: promoApplied ? promoCode : undefined,
+      items: DL.cartToItems(cart)
+    }
+  });
+}
+
+// ── 3h. Checkout Step Progress ────────────────────────────────
+function dl_checkout_progress(step, stepName, option) {
+  DL.push({
+    event: 'checkout_progress',
+    checkout_step: step,
+    checkout_step_name: stepName,
+    checkout_option: option || undefined,
+    ecommerce: {
+      currency: 'USD',
+      value: getCartSubtotal(),
+      items: DL.cartToItems(cart)
+    }
+  });
+}
+
+// ── 3i. Add Payment Info ──────────────────────────────────────
+function dl_add_payment_info(method) {
+  DL.push({
+    event: 'add_payment_info',
+    ecommerce: {
+      currency: 'USD',
+      value: getCartSubtotal(),
+      payment_type: method,
+      coupon: promoApplied ? promoCode : undefined,
+      items: DL.cartToItems(cart)
+    }
+  });
+}
+
+// ── 3j. Add Shipping Info ─────────────────────────────────────
+function dl_add_shipping_info(tier) {
+  DL.push({
+    event: 'add_shipping_info',
+    ecommerce: {
+      currency: 'USD',
+      value: getCartSubtotal(),
+      shipping_tier: tier,
+      coupon: promoApplied ? promoCode : undefined,
+      items: DL.cartToItems(cart)
+    }
+  });
+}
+
+// ── 3k. Purchase ──────────────────────────────────────────────
+function dl_purchase(orderId, subtotal, tax, shipping, coupon) {
+  DL.push({
+    event: 'purchase',
+    ecommerce: {
+      transaction_id: orderId,
+      currency: 'USD',
+      value: subtotal + tax + shipping,
+      tax: tax,
+      shipping: shipping,
+      coupon: coupon || undefined,
+      affiliation: 'LuxeMarket Online',
+      items: DL.cartToItems(cart)
+    }
+  });
+}
+
+// ── 3l. Promo Code Applied ────────────────────────────────────
+function dl_promo_applied(code, discount, success) {
+  DL.push({
+    event: success ? 'select_promotion' : 'promotion_error',
+    coupon_code: code,
+    discount_value: discount,
+    discount_pct: success ? 25 : 0
+  });
+}
+
+// ── 3m. Login / Register ──────────────────────────────────────
+function dl_login(method) {
+  DL.push({ event: 'login', method });
+}
+
+function dl_sign_up(method) {
+  DL.push({ event: 'sign_up', method });
+}
+
+// ── 3n. Newsletter ────────────────────────────────────────────
+function dl_newsletter_subscribe(email) {
+  DL.push({
+    event: 'newsletter_subscribe',
+    email_hash: btoa(email).substring(0, 12) + '...',   // Never log raw PII
+    form_location: currentPage
+  });
+}
+
+// ── 3o. Search / Filter ───────────────────────────────────────
+function dl_filter(filterType, filterValue, resultCount) {
+  DL.push({
+    event: 'filter_applied',
+    filter_type: filterType,
+    filter_value: filterValue,
+    result_count: resultCount
+  });
+}
+
+function dl_sort(sortValue, resultCount) {
+  DL.push({
+    event: 'sort_applied',
+    sort_by: sortValue,
+    result_count: resultCount
+  });
+}
+
+// ── 3p. Payment method selected ──────────────────────────────
+function dl_payment_select(method) {
+  DL.push({ event: 'payment_method_selected', payment_method: method });
+}
+
+// ── 3q. Outbound link click ───────────────────────────────────
+function dl_outbound_click(url, label) {
+  DL.push({
+    event: 'click',
+    link_type: 'outbound',
+    link_url: url,
+    link_text: label,
+    outbound: true
+  });
+}
+
+/* ================================================================
+   4. INSPECTOR PANEL UI HELPERS
+================================================================ */
+let dlPanelOpen = false;
+
+function toggleDLPanel() {
+  dlPanelOpen = !dlPanelOpen;
+  const panel = document.getElementById('dl-panel');
+  const hint  = document.getElementById('dl-hint');
+  panel.style.display = dlPanelOpen ? 'flex' : 'none';
+  hint.style.display  = dlPanelOpen ? 'none' : 'flex';
+  if (dlPanelOpen) refreshDLState();
+}
+
+function clearDLLog() {
+  document.getElementById('dl-tab-events').innerHTML = '';
+  DL._eventCount = 0;
+  document.getElementById('dl-event-count').textContent = '0 events';
+  document.getElementById('dl-badge-count').textContent = '0';
+}
+
+function switchDLTab(tab, btn) {
+  document.querySelectorAll('.dl-tab').forEach(b => { b.classList.remove('active'); b.style.borderBottomColor = 'transparent'; b.style.color = '#8b949e'; });
+  document.querySelectorAll('.dl-tab-content').forEach(c => c.style.display = 'none');
+  btn.classList.add('active');
+  btn.style.borderBottomColor = '#c9a84c';
+  btn.style.color = '#c9a84c';
+  document.getElementById('dl-tab-' + tab).style.display = 'block';
+  if (tab === 'state') refreshDLState();
+  if (tab === 'cart')  refreshDLCart();
+}
+
+function refreshDLState() {
+  const snap = {
+    current_page: currentPage,
+    session_id: DL._sessionId,
+    total_events: DL._eventCount,
+    cart_items: cart.length,
+    cart_value: getCartSubtotal().toFixed(2),
+    promo_applied: promoApplied,
+    promo_code: promoCode,
+    payment_method: selectedPaymentMethod,
+    dataLayer_length: window.dataLayer.length
+  };
+  document.getElementById('dl-state-json').textContent = JSON.stringify(snap, null, 2);
+}
+
+function refreshDLCart() {
+  document.getElementById('dl-cart-json').textContent = JSON.stringify(DL.cartToItems(cart), null, 2);
+}
+
+// Keyboard shortcut: Alt+D  →  toggle inspector
+document.addEventListener('keydown', e => { if (e.altKey && e.key === 'd') toggleDLPanel(); });
+
+// Intercept outbound links to fire DL event
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href^="http"]');
+  if (a && !a.href.includes(window.location.hostname)) {
+    dl_outbound_click(a.href, a.textContent.trim());
+  }
+});
+
+/* ================================================================
+   5. CORE APP FUNCTIONS  (with data layer calls wired in)
+================================================================ */
+
+// ─── Page Navigation ─────────────────────────────────────────
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
@@ -1836,12 +2347,27 @@ function showPage(name) {
   const navEl = document.getElementById('nav-' + name);
   if (navEl) navEl.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  if (name === 'cart') renderCart();
-  if (name === 'checkout') renderCheckoutSummary();
-  if (name === 'shop') renderShopGrid(PRODUCTS);
+  currentPage = name;
+
+  // Page-specific actions
+  if (name === 'cart') {
+    renderCart();
+    dl_view_cart();                      // GA4 view_cart
+  }
+  if (name === 'checkout') {
+    renderCheckoutSummary();
+    dl_begin_checkout();                 // GA4 begin_checkout
+    dl_checkout_progress(1, 'Contact Information');
+  }
+  if (name === 'shop') {
+    renderShopGrid(PRODUCTS);
+    dl_view_item_list(PRODUCTS, 'Main Catalog');  // GA4 view_item_list
+  }
+
+  dl_page_view(name);                    // GA4 page_view for every nav
 }
 
-// ===== RENDER PRODUCTS =====
+// ─── Render Product Cards ─────────────────────────────────────
 function renderProductCard(p, target) {
   const card = document.createElement('div');
   card.className = 'product-card';
@@ -1866,7 +2392,9 @@ function renderProductCard(p, target) {
 function renderFeatured() {
   const grid = document.getElementById('featured-grid');
   grid.innerHTML = '';
-  PRODUCTS.slice(0, 4).forEach(p => renderProductCard(p, 'featured-grid'));
+  const featured = PRODUCTS.slice(0, 4);
+  featured.forEach(p => renderProductCard(p, 'featured-grid'));
+  dl_view_item_list(featured, 'Featured Pieces');  // GA4 impression
 }
 
 function renderShopGrid(products) {
@@ -1876,12 +2404,13 @@ function renderShopGrid(products) {
   products.forEach(p => renderProductCard(p, 'shop-grid'));
 }
 
-// ===== FILTERS =====
+// ─── Filters & Sort ──────────────────────────────────────────
 function filterProducts() {
   let filtered = [...PRODUCTS];
   const maxPrice = parseInt(document.getElementById('priceRange').value);
   filtered = filtered.filter(p => p.price <= maxPrice);
   renderShopGrid(filtered);
+  dl_filter('price', `max_$${maxPrice}`, filtered.length);
 }
 
 function updatePriceLabel(val) {
@@ -1891,13 +2420,14 @@ function updatePriceLabel(val) {
 
 function sortProducts(val) {
   let sorted = [...PRODUCTS];
-  if (val === 'price-low') sorted.sort((a,b) => a.price - b.price);
-  if (val === 'price-high') sorted.sort((a,b) => b.price - a.price);
-  if (val === 'newest') sorted.reverse();
+  if (val === 'price-low')  sorted.sort((a, b) => a.price - b.price);
+  if (val === 'price-high') sorted.sort((a, b) => b.price - a.price);
+  if (val === 'newest')     sorted.reverse();
   renderShopGrid(sorted);
+  dl_sort(val, sorted.length);
 }
 
-// ===== MODAL =====
+// ─── Product Modal ────────────────────────────────────────────
 function openProductModal(p) {
   currentProduct = p;
   document.getElementById('modalImg').textContent = p.emoji;
@@ -1906,13 +2436,13 @@ function openProductModal(p) {
   document.getElementById('modalPrice').textContent = '$' + p.price;
   document.getElementById('modalDesc').textContent = p.desc;
   document.getElementById('modalAddBtn').onclick = () => { addToCart(p.id); closeProductModal(); };
-  // Color swatches
+
   const colorOpts = document.querySelector('.color-options');
   if (p.colors) {
     colorOpts.innerHTML = '';
     p.colors.forEach((c, i) => {
       const d = document.createElement('div');
-      d.className = 'color-swatch' + (i===0?' active':'');
+      d.className = 'color-swatch' + (i === 0 ? ' active' : '');
       d.style.background = c;
       d.onclick = () => selectColor(d);
       colorOpts.appendChild(d);
@@ -1920,6 +2450,8 @@ function openProductModal(p) {
   }
   document.getElementById('productModal').classList.add('open');
   document.body.style.overflow = 'hidden';
+
+  dl_view_item(p);   // GA4 view_item
 }
 
 function closeProductModal() {
@@ -1934,14 +2466,18 @@ function closeModal(e) {
 function selectSize(btn) {
   document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  // Update selectedSize on currentProduct for variant tracking
+  if (currentProduct) currentProduct.selectedSize = btn.textContent.trim();
+  DL.push({ event: 'select_item_variant', variant_type: 'size', variant_value: btn.textContent.trim(), item_name: currentProduct ? currentProduct.name : null });
 }
 
 function selectColor(swatch) {
   swatch.closest('.color-options').querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
   swatch.classList.add('active');
+  DL.push({ event: 'select_item_variant', variant_type: 'color', variant_value: swatch.style.background, item_name: currentProduct ? currentProduct.name : null });
 }
 
-// ===== CART =====
+// ─── Cart ─────────────────────────────────────────────────────
 function addToCart(id) {
   const product = PRODUCTS.find(p => p.id === id);
   const existing = cart.find(c => c.id === id);
@@ -1952,9 +2488,12 @@ function addToCart(id) {
   }
   updateCartCount();
   showToast(product.emoji, product.name, 'Added to your bag!');
+  dl_add_to_cart(product, 1);   // GA4 add_to_cart
 }
 
 function removeFromCart(id) {
+  const item = cart.find(c => c.id === id);
+  if (item) dl_remove_from_cart(item, item.qty);   // GA4 remove_from_cart
   cart = cart.filter(c => c.id !== id);
   renderCart();
   updateCartCount();
@@ -1962,10 +2501,12 @@ function removeFromCart(id) {
 
 function changeQty(id, delta) {
   const item = cart.find(c => c.id === id);
-  if (item) {
-    item.qty = Math.max(1, item.qty + delta);
-    renderCart();
-  }
+  if (!item) return;
+  const oldQty = item.qty;
+  item.qty = Math.max(1, item.qty + delta);
+  if (delta > 0) dl_add_to_cart(item, delta);
+  if (delta < 0 && item.qty > 0) dl_remove_from_cart(item, Math.abs(delta));
+  renderCart();
 }
 
 function updateCartCount() {
@@ -1975,6 +2516,18 @@ function updateCartCount() {
 
 function getCartSubtotal() {
   return cart.reduce((s, c) => s + c.price * c.qty, 0);
+}
+
+function setQty(id, val) {
+  const item = cart.find(c => c.id === id);
+  if (!item) return;
+  const newQty = Math.max(1, parseInt(val) || 1);
+  const diff = newQty - item.qty;
+  item.qty = newQty;
+  if (diff > 0) dl_add_to_cart(item, diff);
+  if (diff < 0) dl_remove_from_cart(item, Math.abs(diff));
+  renderCart();
+  updateCartCount();
 }
 
 function renderCart() {
@@ -1998,7 +2551,6 @@ function renderCart() {
   }
 
   document.getElementById('cart-summary-box').style.display = 'block';
-
   container.innerHTML = '';
   cart.forEach(item => {
     const div = document.createElement('div');
@@ -2028,30 +2580,30 @@ function renderCart() {
   document.getElementById('summaryTotal').textContent = `$${total.toFixed(2)}`;
 }
 
-function setQty(id, val) {
-  const item = cart.find(c => c.id === id);
-  if (item) { item.qty = Math.max(1, parseInt(val)||1); renderCart(); updateCartCount(); }
-}
-
+// ─── Promo Code ───────────────────────────────────────────────
 function applyPromo() {
   const code = document.getElementById('promoInput').value.trim().toUpperCase();
   const msg = document.getElementById('promoMsg');
   if (code === 'LUXE25') {
     promoApplied = true;
+    promoCode = 'LUXE25';
     msg.textContent = '🎉 25% discount applied!';
     msg.className = 'promo-msg good';
+    dl_promo_applied(code, getCartSubtotal() * 0.25, true);   // GA4 select_promotion
     renderCart();
   } else if (code === '') {
     msg.textContent = 'Please enter a promo code.';
     msg.className = 'promo-msg bad';
   } else {
     promoApplied = false;
+    promoCode = null;
     msg.textContent = 'Invalid code. Try LUXE25!';
     msg.className = 'promo-msg bad';
+    dl_promo_applied(code, 0, false);   // promotion_error
   }
 }
 
-// ===== CHECKOUT SUMMARY =====
+// ─── Checkout Summary ─────────────────────────────────────────
 function renderCheckoutSummary() {
   const container = document.getElementById('checkout-items');
   container.innerHTML = '';
@@ -2064,68 +2616,89 @@ function renderCheckoutSummary() {
         <div class="order-item-name">${item.name}</div>
         <div class="order-item-qty">Qty: ${item.qty}</div>
       </div>
-      <div class="order-item-price">$${(item.price*item.qty).toFixed(2)}</div>
+      <div class="order-item-price">$${(item.price * item.qty).toFixed(2)}</div>
     </div>`;
   });
   document.getElementById('co-subtotal').textContent = `$${subtotal.toFixed(2)}`;
   document.getElementById('co-tax').textContent = `$${tax.toFixed(2)}`;
-  document.getElementById('co-total').textContent = `$${(subtotal+tax).toFixed(2)}`;
+  document.getElementById('co-total').textContent = `$${(subtotal + tax).toFixed(2)}`;
 }
 
-// ===== PLACE ORDER =====
+// ─── Place Order ──────────────────────────────────────────────
 function placeOrder(e) {
   e.preventDefault();
-  const orderNum = 'LM-' + Math.floor(100000 + Math.random() * 900000);
-  document.getElementById('orderNumber').textContent = 'Order #' + orderNum;
+  const orderId = 'LM-' + Math.floor(100000 + Math.random() * 900000);
+  currentOrderId = orderId;
+  document.getElementById('orderNumber').textContent = 'Order #' + orderId;
+
+  const subtotal  = getCartSubtotal();
+  const tax       = +(subtotal * 0.08).toFixed(2);
+  const shipping  = subtotal > 150 ? 0 : 9.99;
+  const coupon    = promoApplied ? promoCode : null;
+
+  // GA4 purchase — the most important ecom event
+  dl_purchase(orderId, subtotal, tax, shipping, coupon);
+  dl_checkout_progress(4, 'Order Confirmed', selectedPaymentMethod);
+
   cart = [];
-  updateCartCount();
   promoApplied = false;
+  promoCode = null;
+  updateCartCount();
   showPage('success');
 }
 
-// ===== PAYMENT METHOD =====
+// ─── Payment Method ───────────────────────────────────────────
 function selectPayment(el, type) {
   document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
   el.classList.add('selected');
-  document.getElementById('card-form').style.display = type === 'card' ? 'block' : 'none';
-  document.getElementById('paypal-form').style.display = type === 'paypal' ? 'block' : 'none';
-  document.getElementById('apple-form').style.display = type === 'apple' ? 'block' : 'none';
+  selectedPaymentMethod = type;
+  document.getElementById('card-form').style.display    = type === 'card'   ? 'block' : 'none';
+  document.getElementById('paypal-form').style.display  = type === 'paypal' ? 'block' : 'none';
+  document.getElementById('apple-form').style.display   = type === 'apple'  ? 'block' : 'none';
+  dl_payment_select(type);        // custom event
+  dl_add_payment_info(type);      // GA4 add_payment_info
 }
 
-// ===== CARD FORMAT =====
+// ─── Card Format ──────────────────────────────────────────────
 function formatCard(input) {
-  let val = input.value.replace(/\D/g,'').substring(0,16);
-  input.value = val.replace(/(.{4})/g,'$1 ').trim();
+  let val = input.value.replace(/\D/g, '').substring(0, 16);
+  input.value = val.replace(/(.{4})/g, '$1 ').trim();
 }
 
-// ===== AUTH =====
+// ─── Auth ─────────────────────────────────────────────────────
 function toggleAuthForm() {
-  const si = document.getElementById('signin-form-wrap');
+  const si  = document.getElementById('signin-form-wrap');
   const reg = document.getElementById('register-form-wrap');
-  si.style.display = si.style.display === 'none' ? 'block' : 'none';
-  reg.style.display = reg.style.display === 'none' ? 'block' : 'none';
+  const goingToRegister = si.style.display !== 'none';
+  si.style.display  = goingToRegister ? 'none' : 'block';
+  reg.style.display = goingToRegister ? 'block' : 'none';
+  DL.push({ event: goingToRegister ? 'view_register_form' : 'view_login_form' });
 }
 
 function handleSignIn(e) {
   e.preventDefault();
+  dl_login('email');           // GA4 login
   showToastMsg('Welcome back!', 'Signed in successfully.');
   showPage('home');
 }
 
 function handleRegister(e) {
   e.preventDefault();
+  dl_sign_up('email');         // GA4 sign_up
   showToastMsg('Account Created!', 'Welcome to LuxeMarket.');
   showPage('home');
 }
 
-// ===== NEWSLETTER =====
+// ─── Newsletter ───────────────────────────────────────────────
 function subscribeNewsletter(e) {
   e.preventDefault();
+  const email = document.getElementById('nlEmail').value;
+  dl_newsletter_subscribe(email);
   document.getElementById('nlSuccess').style.display = 'block';
   document.getElementById('nlEmail').value = '';
 }
 
-// ===== TOAST =====
+// ─── Toast ────────────────────────────────────────────────────
 let toastTimer;
 function showToast(emoji, title, sub) {
   clearTimeout(toastTimer);
@@ -2136,14 +2709,49 @@ function showToast(emoji, title, sub) {
   t.classList.add('show');
   toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
 }
+function showToastMsg(title, sub) { showToast('✅', title, sub); }
 
-function showToastMsg(title, sub) {
-  showToast('✅', title, sub);
-}
+/* ================================================================
+   6. INIT — fire initial events on page load
+================================================================ */
+(function init() {
+  // GA4 page_view for the landing page
+  dl_page_view('home');
 
-// ===== INIT =====
-renderFeatured();
-renderShopGrid(PRODUCTS);
+  // Render UI
+  renderFeatured();
+  renderShopGrid(PRODUCTS);
+
+  // Fire initial item list impression for the hero grid
+  // (already fires inside renderFeatured above)
+
+  // Shipping radio buttons — fire add_shipping_info on change
+  document.querySelectorAll('input[name="shipping"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const labelMap = { free: 'Standard Free', express: 'Express $12.99', overnight: 'Overnight $29.99' };
+      dl_add_shipping_info(labelMap[radio.value] || radio.value);
+      dl_checkout_progress(3, 'Shipping Method', radio.value);
+    });
+  });
+
+  // Contact & shipping form field focus → step tracking
+  const step2Triggered = {};
+  document.querySelectorAll('.checkout-form .form-input, .checkout-form .form-select').forEach((field, i) => {
+    field.addEventListener('focus', () => {
+      const sectionEl = field.closest('.form-section');
+      if (!sectionEl) return;
+      const stepNum = sectionEl.querySelector('.form-section-num');
+      if (stepNum && !step2Triggered[stepNum.textContent]) {
+        step2Triggered[stepNum.textContent] = true;
+        if (stepNum.textContent === '1') dl_checkout_progress(1, 'Contact Information');
+        if (stepNum.textContent === '2') dl_checkout_progress(2, 'Shipping Address');
+      }
+    });
+  });
+
+  console.log('%c[LuxeMarket] Data Layer initialized ✓', 'color:#c9a84c;font-size:1.1em;font-weight:bold;');
+  console.log('%cPress Alt+D to open the Data Layer Inspector', 'color:#888;');
+})();
 </script>
 </body>
 </html>
